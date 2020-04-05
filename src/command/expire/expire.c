@@ -253,10 +253,17 @@ removeExpiredArchive(InfoBackup *infoBackup)
                 globalBackupRetentionList = strLstSort(
                     infoBackupDataLabelList(infoBackup, backupRegExpP(.full = true, .differential = true)), sortOrderDesc);
             }
-            else
+            else if (strCmp(archiveRetentionType, STRDEF(CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_INCR)) == 0)
             {   // Incrementals can depend on Full or Diff so get a list of all incrementals
                 globalBackupRetentionList = strLstSort(
                     infoBackupDataLabelList(infoBackup, backupRegExpP(.full = true, .differential = true, .incremental = true)),
+                    sortOrderDesc);
+            } 
+            else if (strCmp(archiveRetentionType, STRDEF(CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_DAYS)) == 0)
+            {
+                int64_t numDays = cfgOptionInt64(cfgOptRepoRetentionDays);
+                globalBackupRetentionList = strLstSort(
+                    infoBackupDataLabelListByTime(infoBackup, numDays),
                     sortOrderDesc);
             }
 

@@ -508,6 +508,85 @@ infoBackupDataLabelList(const InfoBackup *this, const String *expression)
 
 /**********************************************************************************************************************************/
 StringList *
+infoBackupDataLabelListByTime(const InfoBackup *this, int64_t days)
+{
+    FUNCTION_LOG_BEGIN(logLevelTrace);
+        FUNCTION_LOG_PARAM(INFO_BACKUP, this);
+        FUNCTION_LOG_PARAM(INT, days);
+    FUNCTION_LOG_END();
+
+    ASSERT(this != NULL);
+    
+    
+
+    // Return a 0 sized list if no current backups or none matching the filter
+    StringList *result = strLstNew();
+    
+    time_t now, expiration_date;
+    
+    // Get today date
+    time(&now);
+    // substract days to get the expiration_date
+    expiration_date = now - days * 24 * 60 * 60;
+
+    MEM_CONTEXT_TEMP_BEGIN()
+    {
+        bool firstFull = true;
+        String *firstFullLabel = NULL;
+        RegExp *regExpFull = regExpNew(backupRegExpP(.full = true));
+        
+        // Find the oldest full backup we need to keep, even if expired
+        for (int backupLabelIdx = infoBackupDataTotal(this) - 1; backupLabelIdx >= 0; backupLabelIdx--)
+        {
+            InfoBackupData backupData = infoBackupData(this, backupLabelIdx);
+            
+            if (regExpMatch(regExpFull, backupData.backupLabel))
+            {
+                if (firstFull && expiration_date < backupData.backupTimestampStart)
+                {
+                    // We have found the first full before our expiration_date
+                    firstFull = false;
+                    firstFullLabel = strDup(backupData.backupLabel);
+                }
+            }
+        }
+        
+        // Now we look for all the backup types
+        RegExp *regExpAll = regExpNew(backupRegExpP(.full = true, .differential = true, .incremental = true));
+
+        firstFull = false;
+        // For each backup label, compare it to the filter and sort it for return
+        for (unsigned int backupLabelIdx = 0; backupLabelIdx < infoBackupDataTotal(this); backupLabelIdx++)
+        {
+            InfoBackupData backupData = infoBackupData(this, backupLabelIdx);
+
+            if (regExpMatch(regExpAll, backupData.backupLabel))
+            {
+                // Backup start time is older than our retention, candidate to remove
+                if (expiration_date > backupData.backupTimestampStart)
+                {
+                    // Ok to remove, we have already reached our required first full
+                    if (firstFull)
+                        strLstAdd(result, backupData.backupLabel);
+                    else
+                    {
+                        // We won't expire this backup; check if it's the firstFullLabel
+                        if (strCmp(backupData.backupLabel, firstFullLabel) == 0)
+                            firstFull = true;
+                    }
+                }
+            }
+        }
+        
+        strFree(firstFullLabel);
+    }
+    MEM_CONTEXT_TEMP_END();
+
+    FUNCTION_LOG_RETURN(STRING_LIST, result);
+}
+
+/**********************************************************************************************************************************/
+StringList *
 infoBackupDataDependentList(const InfoBackup *this, const String *backupLabel)
 {
     FUNCTION_LOG_BEGIN(logLevelTrace);

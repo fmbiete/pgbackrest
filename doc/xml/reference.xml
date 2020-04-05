@@ -390,6 +390,15 @@
 
                         <example>2</example>
                     </config-key>
+                    
+                    <!-- CONFIG - RETENTION SECTION - REPO-DAYS-RETENTION KEY -->
+                    <config-key id="repo-retention-days" name="Days Retention">
+                        <summary>Number of days to retain backups.</summary>
+
+                        <text>Backup olders than this number of days are candidate for expiration, but not while they are needed to perform a recovery of a incremental or differential backup not expired.</text>
+
+                        <example>2</example>
+                    </config-key>
 
                     <!-- CONFIG - RETENTION SECTION - REPO-DIFFERENTIAL-RETENTION KEY -->
                     <config-key id="repo-retention-diff" name="Differential Retention">

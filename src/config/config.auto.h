@@ -349,6 +349,8 @@ Option constants
     STRING_DECLARE(CFGOPT_REPO1_RETENTION_ARCHIVE_STR);
 #define CFGOPT_REPO1_RETENTION_ARCHIVE_TYPE                         "repo1-retention-archive-type"
     STRING_DECLARE(CFGOPT_REPO1_RETENTION_ARCHIVE_TYPE_STR);
+#define CFGOPT_REPO1_RETENTION_DAYS                                 "repo1-retention-days"
+    STRING_DECLARE(CFGOPT_REPO1_RETENTION_DAYS_STR);
 #define CFGOPT_REPO1_RETENTION_DIFF                                 "repo1-retention-diff"
     STRING_DECLARE(CFGOPT_REPO1_RETENTION_DIFF_STR);
 #define CFGOPT_REPO1_RETENTION_FULL                                 "repo1-retention-full"
@@ -416,7 +418,7 @@ Option constants
 #define CFGOPT_TYPE                                                 "type"
     STRING_DECLARE(CFGOPT_TYPE_STR);
 
-#define CFG_OPTION_TOTAL                                            181
+#define CFG_OPTION_TOTAL                                            182
 
 /***********************************************************************************************************************************
 Command enum
@@ -598,6 +600,7 @@ typedef enum
     cfgOptRepoPath,
     cfgOptRepoRetentionArchive,
     cfgOptRepoRetentionArchiveType,
+    cfgOptRepoRetentionDays,
     cfgOptRepoRetentionDiff,
     cfgOptRepoRetentionFull,
     cfgOptRepoS3Bucket,

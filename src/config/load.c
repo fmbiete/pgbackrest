@@ -191,12 +191,26 @@ cfgLoadUpdateOption(void)
                             cfgOptionName(cfgOptRepoRetentionDiff + optionIdx));
                     }
                 }
-                else
+                else if (strEqZ(archiveRetentionType, CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_INCR))
                 {
                     CHECK(strEqZ(archiveRetentionType, CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_INCR));
 
                     LOG_WARN_FMT("%s option '%s' is not set", strPtr(msgArchiveOff),
                         cfgOptionName(cfgOptRepoRetentionArchive + optionIdx));
+                }
+                else if (strEqZ(archiveRetentionType, CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_DAYS))
+                {
+                    // if repo-retention-diff is set then user must have set it
+                    if (cfgOptionTest(cfgOptRepoRetentionDays + optionIdx))
+                    {
+                        cfgOptionSet(cfgOptRepoRetentionDays + optionIdx, cfgSourceDefault,
+                            VARUINT(cfgOptionUInt(cfgOptRepoRetentionDays + optionIdx)));
+                    }
+                    else
+                    {
+                        LOG_WARN_FMT("%s option '%s' is not set", strPtr(msgArchiveOff),
+                            cfgOptionName(cfgOptRepoRetentionDays + optionIdx));
+                    }
                 }
             }
             else

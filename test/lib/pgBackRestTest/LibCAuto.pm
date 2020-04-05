@@ -277,6 +277,7 @@ sub libcAutoExportTag
             'CFGOPT_REPO_RETENTION_ARCHIVE_TYPE',
             'CFGOPT_REPO_RETENTION_DIFF',
             'CFGOPT_REPO_RETENTION_FULL',
+            'CFGOPT_REPO_RETENTION_DAYS',
             'CFGOPT_REPO_S3_BUCKET',
             'CFGOPT_REPO_S3_CA_FILE',
             'CFGOPT_REPO_S3_CA_PATH',

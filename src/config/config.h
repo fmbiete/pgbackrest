@@ -49,6 +49,7 @@ Constants for configuration options.
 #define CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_DIFF              "diff"
 #define CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_FULL              "full"
 #define CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_INCR              "incr"
+#define CFGOPTVAL_TMP_REPO_RETENTION_ARCHIVE_TYPE_DAYS              "days"
 
 /***********************************************************************************************************************************
 Command Functions

@@ -77,6 +77,9 @@ Getters/Setters
 // Return a list of current backup labels, applying a regex expression if provided
 StringList *infoBackupDataLabelList(const InfoBackup *this, const String *expression);
 
+// Return a list of current backup labels, older than the number of days provided; excluding until the first full backup
+StringList *infoBackupDataLabelListByTime(const InfoBackup *this, int64_t days);
+
 // PostgreSQL info
 InfoPg *infoBackupPg(const InfoBackup *this);
 InfoBackup *infoBackupPgSet(InfoBackup *this, unsigned int pgVersion, uint64_t pgSystemId);
